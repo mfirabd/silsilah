@@ -15,8 +15,10 @@ Route::get('/', 'UsersController@search');
 
 Auth::routes();
 
-Route::get('profile/update-password', 'Auth\ChangePasswordController@show')->middleware('auth')->name('profile.change-password.form');
-Route::post('profile/update-password', 'Auth\ChangePasswordController@update')->middleware('auth')->name('profile.change-password.update');
+Route::group(['middleware' => 'auth'], function () {
+    Route::get('password/change', 'Auth\ChangePasswordController@show')->name('password.change');
+    Route::post('password/change', 'Auth\ChangePasswordController@update')->name('password.change');
+});
 
 Route::get('home', 'HomeController@index')->name('home');
 Route::get('profile', 'HomeController@index')->name('profile');
@@ -38,6 +40,8 @@ Route::delete('users/{user}', 'UsersController@destroy')->name('users.destroy');
 
 Route::get('users/{user}/marriages', 'UserMarriagesController@index')->name('users.marriages');
 
+Route::get('birthdays', 'BirthdayController@index')->name('birthdays.index');
+
 /**
  * Couple/Marriages Routes
  */
@@ -46,9 +50,14 @@ Route::get('couples/{couple}/edit', ['as' => 'couples.edit', 'uses' => 'CouplesC
 Route::patch('couples/{couple}', ['as' => 'couples.update', 'uses' => 'CouplesController@update']);
 
 /**
- * Backup Restore Database Routes
+ * Admin only routes
  */
-Route::post('backups/upload', ['as' => 'backups.upload', 'uses' => 'BackupsController@upload']);
-Route::post('backups/{fileName}/restore', ['as' => 'backups.restore', 'uses' => 'BackupsController@restore']);
-Route::get('backups/{fileName}/dl', ['as' => 'backups.download', 'uses' => 'BackupsController@download']);
-Route::resource('backups', 'BackupsController');
+Route::group(['middleware' => 'admin'], function () {
+    /**
+     * Backup Restore Database Routes
+     */
+    Route::post('backups/upload', ['as' => 'backups.upload', 'uses' => 'BackupsController@upload']);
+    Route::post('backups/{fileName}/restore', ['as' => 'backups.restore', 'uses' => 'BackupsController@restore']);
+    Route::get('backups/{fileName}/dl', ['as' => 'backups.download', 'uses' => 'BackupsController@download']);
+    Route::resource('backups', 'BackupsController');
+});

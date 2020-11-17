@@ -59,7 +59,7 @@ Aplikasi ini menggunakan Bahasa Indonesia dan Bahasa Inggris, diatur pada `confi
 
 Aplikasi ini dapat dipasang pada server lokal dan onlne dengan spesifikasi berikut:
 
-1. PHP 7.1.3 (dan mengikuti [server requirements Laravel 5.8](https://laravel.com/docs/5.8#server-requirements)),
+1. PHP 7.3 (dan mengikuti [server requirements Laravel 7.x](https://laravel.com/docs/7.x/installation#server-requirements) lainnya),
 2. Database MySQL atau MariaDB,
 3. SQlite (untuk automated testing).
 
